@@ -88,18 +88,27 @@ test_price = get_price(soup_test)
 print(test_price)
 
 
-### Write to CSV
 
-import csv
-with open('eggs.csv', 'w', newline='') as csvfile:
-    spamwriter = csv.writer(csvfile, delimiter=' ',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    spamwriter.writerow([test_price, ',', url_test])
+### get all battery listings under 18650 size category
+url_test = 'https://www.batteryjunction.com/18650.html'
+
+soup_test = retrieve(url_test)
 
 
-def get_urls(soup: BeautifulSoup):
-    urls = soup.find_all()
+def get_url_titles(soup: BeautifulSoup):
+    divs = soup.find_all('div', class_="details")
+    urls = []
+    titles = []
+    for _ in divs:
+        a = _.find('a')
+        urls.append('https://www.batteryjunction.com/' + a['href'])
+        titles.append(a.text)
+    return urls, titles
 
+urls, titles = get_url_titles(soup_test)
+
+print(urls)
+print(titles)
 
 def get_nextPage(soup: BeautifulSoup):
     nextPage = soup.find()
@@ -108,11 +117,30 @@ def get_nextPage(soup: BeautifulSoup):
 ## Main:
 
 #1] get all URL's on first page
+
+root = retrieve('https://www.batteryjunction.com/18650.html')
+
+
 #2] start asynch process to get rest of pages
     #2a] get next page link
     #2b] get listings on page
     #2c] save to listingUrl_list list
+
 #3] start asynch process to get prices of batteries
-    #3a] get first listingSoup on listingUrl_list
-    #3b] get price from soup, save to DB
+    #3a] get details of all listings
+urls, titles = get_url_titles(root)
+prices = []
+for _ in urls:
+    prices.append(get_price(retrieve(_)))
+
+    #3b] save to DB
+
+import csv
+with open('eggs.csv', 'w', newline='') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=' ',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    for idx, val in enumerate(urls):
+        print(idx, val)
+        spamwriter.writerow([urls[idx], titles[idx], prices[idx]])
+
     #3c] update listingUrl list, move to next if it exists, else wait for output from rest_of_pages process
