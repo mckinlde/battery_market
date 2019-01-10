@@ -95,3 +95,24 @@ with open('eggs.csv', 'w', newline='') as csvfile:
     spamwriter = csv.writer(csvfile, delimiter=' ',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     spamwriter.writerow([test_price, ',', url_test])
+
+
+def get_urls(soup: BeautifulSoup):
+    urls = soup.find_all()
+
+
+def get_nextPage(soup: BeautifulSoup):
+    nextPage = soup.find()
+
+
+## Main:
+
+#1] get all URL's on first page
+#2] start asynch process to get rest of pages
+    #2a] get next page link
+    #2b] get listings on page
+    #2c] save to listingUrl_list list
+#3] start asynch process to get prices of batteries
+    #3a] get first listingSoup on listingUrl_list
+    #3b] get price from soup, save to DB
+    #3c] update listingUrl list, move to next if it exists, else wait for output from rest_of_pages process
