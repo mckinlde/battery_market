@@ -74,7 +74,8 @@ soup_test = retrieve(url_test)
 
 #print(soup_test)
 
-def get_price(soup: BeautifulSoup):
+def get_price(soup: BeautifulSoup): # returns as '$x.xx'
+
     price = soup.find("div", class_="sale-price")
     #div class="sale-price"
     #<div class="eci-price-units">$3.95/unit</div>
@@ -85,3 +86,13 @@ def get_price(soup: BeautifulSoup):
 test_price = get_price(soup_test)
 
 print(test_price)
+
+
+### Write to CSV
+
+import csv
+with open('eggs.csv', 'wb') as csvfile:
+    spamwriter = csv.writer(csvfile, delimiter=' ',
+                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+    spamwriter.writerow(['Spam'] * 5 + ['Baked Beans'])
+    spamwriter.writerow(['Spam', 'Lovely Spam', 'Wonderful Spam'])
