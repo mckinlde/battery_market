@@ -71,12 +71,15 @@ def get_attrs(soup: BeautifulSoup):
 url_test = 'https://www.batteryjunction.com/samsung-inr18650-25r.html'
 
 soup_test = retrieve(url_test)
-print(soup_test)
+
+#print(soup_test)
 
 def get_price(soup: BeautifulSoup):
-    price = soup.find_all("div", class_="eci-price-units")
+    price = soup.find("div", class_="sale-price")
+    #div class="sale-price"
     #<div class="eci-price-units">$3.95/unit</div>
-    return price
+    amount = price.text
+    return amount
 
 
 test_price = get_price(soup_test)
