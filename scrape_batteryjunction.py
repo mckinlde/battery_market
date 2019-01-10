@@ -138,7 +138,9 @@ for _ in urls:
 import csv
 with open('eggs.csv', 'w', newline='') as csvfile:
     spamwriter = csv.writer(csvfile, delimiter=' ',
-                            quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                            quotechar=',', quoting=csv.QUOTE_MINIMAL)
+
+    spamwriter.writerow(['urls', 'titles', 'prices'])
     for idx, val in enumerate(urls):
         print(idx, val)
         spamwriter.writerow([urls[idx], titles[idx], prices[idx]])
