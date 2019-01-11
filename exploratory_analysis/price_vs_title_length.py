@@ -46,7 +46,7 @@ X = new['title_lengths']
 ##ScatterPlot
 plt.scatter(X, Y, c='green', marker='o')
 plt.title("Batteries from BatteryJunction.com")
-plt.xlabel("Price ($USD)")
-plt.ylabel("Listing Title Length (char)")
+plt.xlabel("Listing Title Length (char)")
+plt.ylabel("Price ($USD)")
 plt.show()
 
