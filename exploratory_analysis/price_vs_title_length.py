@@ -11,24 +11,32 @@ import pandas as pd
 
 
 # /// Read CSV into DataFrame, labeling columns with headers, not specifying a column (index_col) to label each row
-D = pd.read_csv("eggs.csv", index_col=False)  # popular LabVIEW clusters vs. ratings
+D = pd.read_csv("../eggs.csv", index_col=False)
 print(D.head())
 
 # new price - title only dataframe
-new = D[['Vehicle Make','Vehicle Model','Model Year','Odometer miles','Purchase Price']].copy()
+new = D[['titles','prices']].copy()
 #'Seller Zip Code','Buyer Zip Code','Title Application Date','Issue Type'
 print(new.head())
 
-#Write to file
-new.to_csv('mmyop_notation_gvmt_data.csv', encoding='utf-8', index=False, float_format='%.f')
-print('mark')
+# replace titles with len(title)
+title_lengths = []
+for _ in new['titles']:
+    title_lengths.append(len(_))
 
+print(title_lengths)
 
-# Sort my ascending miles, then descending year
-df = pd.DataFrame(D)
-df.sort_values(by=['Odometer miles'], inplace=True, ascending=True)
-df.sort_values(by=['Model Year'], inplace=True, ascending=False)
+import numpy as np
+df = pd.DataFrame(np.reshape(title_lengths,(len(title_lengths),1)),columns=['title_lengths'])
+
 print(df.head())
+
+# get it all into 1 dataframe
+new = new.join(df, lsuffix='_new', rsuffix='_df')
+
+print(new.head())
+
+
 import matplotlib.pylab as plt
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
