@@ -38,17 +38,15 @@ print(new.head())
 
 
 import matplotlib.pylab as plt
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+import seaborn as sns
 
-
-Z = D['Purchase Price']
-Y = D['Odometer miles']
-X = D['Model Year']
+new['prices'].replace('^\$+', '', regex=True, inplace=True) #trim leading $
+Y = new['prices']
+X = new['title_lengths']
 ##ScatterPlot
-ax.scatter(X, Y, Z, c='green', marker='o')
-ax.set_zlabel('Purchase Price')
-ax.set_ylabel('Odometer miles')
-ax.set_xlabel('Model Year')
+plt.scatter(X, Y, c='green', marker='o')
+plt.title("Batteries from BatteryJunction.com")
+plt.xlabel("Price ($USD)")
+plt.ylabel("Listing Title Length (char)")
 plt.show()
 
